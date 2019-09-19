@@ -11,14 +11,26 @@ from django import forms
 class PersonAdminForm(forms.ModelForm):
 
     extra_field = forms.ChoiceField(choices=YEAR_IN_SCHOOL_CHOICES)
+    is_checked = forms.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        # first call parent's constructor
+        super(PersonAdminForm, self).__init__(*args, **kwargs)
+        # there's a `fields` property now
+        self.fields['is_checked'].required = False
 
     def save(self, commit=True):
         extra_field = self.cleaned_data.get('extra_field', None)
-        student = Student.objects.last()
-        self.cleaned_data['student'] = student
-        import ipdb; ipdb.set_trace()
-        # ...do something with extra_field here...
+        is_checked = self.cleaned_data.get('is_checked', None)
         return super(PersonAdminForm, self).save(commit=commit)
+
+    def clean_student(self):
+        if self.cleaned_data.get('is_checked'):
+            import ipdb; ipdb.set_trace()
+            student = Student.objects.last()
+            return student
+        else:
+            return self.cleaned_data.get('student')
 
     class Meta:
         model = Person
@@ -31,4 +43,7 @@ class PersonAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     list_display_links = ('name', )
     form = PersonAdminForm
-    fields = ('name', 'student', 'shirt_size', 'extra_field', )
+    fields = ('is_checked', 'name', 'student', 'shirt_size', 'extra_field', )
+
+    class Media:
+            js = ('js/conditional.js',)
