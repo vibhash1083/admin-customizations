@@ -14,6 +14,8 @@ class PersonAdminForm(forms.ModelForm):
 
     def save(self, commit=True):
         extra_field = self.cleaned_data.get('extra_field', None)
+        student = Student.objects.last()
+        self.cleaned_data['student'] = student
         import ipdb; ipdb.set_trace()
         # ...do something with extra_field here...
         return super(PersonAdminForm, self).save(commit=commit)
@@ -29,4 +31,4 @@ class PersonAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     list_display_links = ('name', )
     form = PersonAdminForm
-    fields = ('name', 'shirt_size', 'extra_field', )
+    fields = ('name', 'student', 'shirt_size', 'extra_field', )
