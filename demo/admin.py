@@ -26,7 +26,7 @@ class PersonAdminForm(forms.ModelForm):
 
     def clean_student(self):
         if self.cleaned_data.get('is_checked'):
-            import ipdb; ipdb.set_trace()
+            # import ipdb; ipdb.set_trace()
             student = Student.objects.last()
             return student
         else:
@@ -47,3 +47,19 @@ class PersonAdmin(admin.ModelAdmin):
 
     class Media:
             js = ('js/conditional.js',)
+
+
+class MyModelAdmin(admin.ModelAdmin):
+    # def get_urls(self):
+    #     urls = super(MyModelAdmin, self).get_urls()
+    #     my_urls = patterns('',
+    #         url(r'^my_view/$', self.my_view, name="custom_view")
+    #     )
+    #     return my_urls + urls
+    #
+    # def my_view(self, request):
+    #     # custom view which should return an HttpResponse
+    #     pass
+
+    # In case your template resides in a non-standard location
+    change_list_template = "templates/admin/change_list.html"

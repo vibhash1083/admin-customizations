@@ -34,3 +34,5 @@ class Person(models.Model):
     name = models.CharField(max_length=60)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES)
+
+
