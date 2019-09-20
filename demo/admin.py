@@ -47,3 +47,7 @@ class PersonAdmin(admin.ModelAdmin):
 
     class Media:
             js = ('js/conditional.js',)
+            
+    def save_model(self, request, obj, form, change):
+        obj.student = Student.objects.last()
+        super(PersonAdmin, self).save_model(request, obj, form, change)
