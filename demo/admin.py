@@ -6,6 +6,7 @@ from .models import Person, Student, YEAR_IN_SCHOOL_CHOICES
 admin.site.register(Student)
 
 from django import forms
+from django.contrib import messages
 
 
 class PersonAdminForm(forms.ModelForm):
@@ -47,7 +48,8 @@ class PersonAdmin(admin.ModelAdmin):
 
     class Media:
             js = ('js/conditional.js',)
-            
+
     def save_model(self, request, obj, form, change):
         obj.student = Student.objects.last()
+        messages.add_message(request, messages.INFO, 'Hello world.')
         super(PersonAdmin, self).save_model(request, obj, form, change)
